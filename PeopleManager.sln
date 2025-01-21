@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager", "PeopleManager\PeopleManager.csproj", "{750B7D2D-D409-4F9F-A27F-609927D23BDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Domain", "PeopleManager.Domain\PeopleManager.Domain.csproj", "{CFE6EA79-4A5F-4EF6-9CEF-7718235A442E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Repository", "PeopleManager.Repository\PeopleManager.Repository.csproj", "{BEDC2B32-112A-4B4F-A65E-8904D64A2F3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{750B7D2D-D409-4F9F-A27F-609927D23BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{750B7D2D-D409-4F9F-A27F-609927D23BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{750B7D2D-D409-4F9F-A27F-609927D23BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE6EA79-4A5F-4EF6-9CEF-7718235A442E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE6EA79-4A5F-4EF6-9CEF-7718235A442E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE6EA79-4A5F-4EF6-9CEF-7718235A442E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE6EA79-4A5F-4EF6-9CEF-7718235A442E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEDC2B32-112A-4B4F-A65E-8904D64A2F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEDC2B32-112A-4B4F-A65E-8904D64A2F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEDC2B32-112A-4B4F-A65E-8904D64A2F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEDC2B32-112A-4B4F-A65E-8904D64A2F3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
