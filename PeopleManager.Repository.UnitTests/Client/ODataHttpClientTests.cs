@@ -4,7 +4,7 @@ using Moq;
 using Moq.Protected;
 using PeopleManager.Repository.Client;
 
-namespace PeopleManager.Repository.Tests.Client;
+namespace PeopleManager.Repository.UnitTests.Client;
 
 public class ODataHttpClientTests
 {

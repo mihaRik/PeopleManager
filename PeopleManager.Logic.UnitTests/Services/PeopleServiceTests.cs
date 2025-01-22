@@ -4,7 +4,7 @@ using PeopleManager.Domain.Entities;
 using PeopleManager.Logic.Services;
 using PeopleManager.Repository;
 
-namespace PeopleManager.Logic.Tests.Services;
+namespace PeopleManager.Logic.UnitTests.Services;
 
 public class PeopleServiceTests
     {

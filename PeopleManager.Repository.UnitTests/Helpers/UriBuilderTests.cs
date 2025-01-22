@@ -1,7 +1,7 @@
 using FluentAssertions;
 using UriBuilder = PeopleManager.Repository.Utils.UriBuilder;
 
-namespace PeopleManager.Repository.Tests.Helpers;
+namespace PeopleManager.Repository.UnitTests.Helpers;
 
 public class UriBuilderTests
     {

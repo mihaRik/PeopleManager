@@ -5,7 +5,7 @@ using FluentAssertions;
 using PeopleManager.Domain.Entities;
 using PeopleManager.Repository.Client;
 
-namespace PeopleManager.Repository.Tests;
+namespace PeopleManager.Repository.UnitTests;
 
 public class PeopleRepositoryTests
 {

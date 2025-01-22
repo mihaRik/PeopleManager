@@ -8,9 +8,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Repository", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Logic", "PeopleManager.Logic\PeopleManager.Logic.csproj", "{001C3A0F-DB11-4CF9-838D-300C0A510165}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Repository.Tests", "PeopleManager.Repository.Tests\PeopleManager.Repository.Tests.csproj", "{D0624B18-EB00-4A01-BED9-F02BBFBA47A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Repository.UnitTests", "PeopleManager.Repository.UnitTests\PeopleManager.Repository.UnitTests.csproj", "{D0624B18-EB00-4A01-BED9-F02BBFBA47A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Logic.Tests", "PeopleManager.Logic.Tests\PeopleManager.Logic.Tests.csproj", "{4D9612B6-C791-47B3-B11E-58F922DE108D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Logic.UnitTests", "PeopleManager.Logic.UnitTests\PeopleManager.Logic.UnitTests.csproj", "{4D9612B6-C791-47B3-B11E-58F922DE108D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
