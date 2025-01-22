@@ -1,5 +1,7 @@
 namespace PeopleManager;
 
+#nullable disable
+
 public class Option
 {
     public string Name { get; init; }

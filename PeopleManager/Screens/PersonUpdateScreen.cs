@@ -4,7 +4,7 @@ using PeopleManager.Logic.Services;
 
 namespace PeopleManager.Screens;
 
-public class PersonUpdateScreen : IDisposable
+public class PersonUpdateScreen
 {
     private readonly IPeopleService _peopleService;
 
@@ -21,7 +21,6 @@ public class PersonUpdateScreen : IDisposable
             return;
         }
 
-        Console.WriteLine();
         var properties = typeof(Person).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.Name != nameof(Person.FullName));
         var propertiesOptions = properties.Select((p, i) => new { Key = i + 1, Value = p.Name })
@@ -73,8 +72,7 @@ public class PersonUpdateScreen : IDisposable
             {
                 newValue = (long)InputScreenHelper.GetValidNumericInput();
             }
-            
-            Console.WriteLine();
+
             Console.WriteLine("Updating...");
             var updatedPerson = await _peopleService.UpdatePersonAsync(person, propertyInfo, newValue, cancellationToken).ConfigureAwait(false);
             Console.Clear();
@@ -86,24 +84,5 @@ public class PersonUpdateScreen : IDisposable
             Console.WriteLine();
             await DisplayPersonUpdateScreenAsync([person], cancellationToken).ConfigureAwait(false);
         }
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _peopleService.Dispose();
-        }
-    }
-
-    ~PersonUpdateScreen()
-    {
-        Dispose(false);
     }
 }

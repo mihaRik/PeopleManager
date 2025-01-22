@@ -32,7 +32,7 @@ public class PeopleRepository : IPeopleRepository
         return wrapper?.Value ?? Array.Empty<Person>();
     }
 
-    public async Task<int> GetPeopleCountAsync(string searchQuery = null, CancellationToken cancellationToken = default)
+    public async Task<int> GetPeopleCountAsync(string searchQuery = null!, CancellationToken cancellationToken = default)
     {
         var uriBuilder = new UriBuilder(PeopleSegmentUrl);
         if (searchQuery != null)
@@ -89,24 +89,5 @@ public class PeopleRepository : IPeopleRepository
         var response = await _httpClient.MakeRequestAsync(request, cancellationToken).ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<Person>(cancellationToken: cancellationToken).ConfigureAwait(false);
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _httpClient.Dispose();
-        }
-    }
-
-    ~PeopleRepository()
-    {
-        Dispose(false);
     }
 }

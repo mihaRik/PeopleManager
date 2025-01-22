@@ -4,7 +4,7 @@ using PeopleManager.Logic.Helpers;
 
 namespace PeopleManager.Logic.Services;
 
-public interface IPeopleService : IDisposable
+public interface IPeopleService
 {
     Task<PagedResult<Person>> GetPeopleAsync(int page, int pageSize, CancellationToken cancellationToken);
     

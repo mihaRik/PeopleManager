@@ -27,7 +27,7 @@ public class OptionsScreen
             {
                 if (!options.ContainsKey(input))
                 {
-                    Console.WriteLine($"Please enter a valid number ({string.Join(", ", options.Keys)}).");
+                    Console.WriteLine($"Please enter a valid option number ({string.Join(", ", options.Keys)}).");
                 }
                 else
                 {

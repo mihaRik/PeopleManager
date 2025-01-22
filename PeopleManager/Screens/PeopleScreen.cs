@@ -1,20 +1,23 @@
 using PeopleManager.Domain.Entities;
+using PeopleManager.Helpers;
 using PeopleManager.Logic.Helpers;
 using PeopleManager.Logic.Services;
 
 namespace PeopleManager.Screens;
 
-public class PeopleListScreen : IDisposable
+public class PeopleListScreen
 {
     private readonly IPeopleService _peopleService;
     private readonly PersonScreen _personScreen;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IConsoleWrapper _console;
 
-    public PeopleListScreen(IPeopleService peopleService, PersonScreen personScreen, IServiceProvider serviceProvider)
+    public PeopleListScreen(IPeopleService peopleService, PersonScreen personScreen, IServiceProvider serviceProvider, IConsoleWrapper console)
     {
         _peopleService = peopleService;
         _personScreen = personScreen;
         _serviceProvider = serviceProvider;
+        _console = console;
     }
 
     private static Option GetBackToListOption (Option option) => new() { Name = "Back to list ⏪", Action = option.Action, ActionParams = option.ActionParams};
@@ -93,7 +96,7 @@ public class PeopleListScreen : IDisposable
         if (!pagedResult.Items.Any())
         {
             Console.WriteLine("No people found.");
-            return [];
+            return people;
         }
 
         Console.WriteLine($"Page #{pagedResult.CurrentPage} of {(pagedResult.TotalPages < 1 ? 1 : pagedResult.TotalPages)}");
@@ -106,7 +109,7 @@ public class PeopleListScreen : IDisposable
         return people;
     }
     
-    private static async Task GetArrowKey<T>(
+    private async Task GetArrowKey<T>(
         PagedResult<T> pagedResult,
         Option navigationFunction,
         CancellationToken cancellationToken)
@@ -114,7 +117,7 @@ public class PeopleListScreen : IDisposable
         while (true)
         {
             Console.WriteLine("You can use arrows(<- | ->) to navigate, or press any key to continue.");
-            var key = Console.ReadKey();
+            var key = _console.ReadKey();
             switch (key.Key)
             {
                 case ConsoleKey.LeftArrow when pagedResult.CurrentPage > 1:
@@ -139,24 +142,5 @@ public class PeopleListScreen : IDisposable
 
             break;
         }
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _peopleService.Dispose();
-        }
-    }
-
-    ~PeopleListScreen()
-    {
-        Dispose(false);
     }
 }

@@ -24,7 +24,11 @@ public class ODataHttpClientTests
     public void TearDown()
     {
         _mockHttpClient.Dispose();
-        _oDataHttpClient.Dispose();
+
+        if (_oDataHttpClient is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 
     [Test]

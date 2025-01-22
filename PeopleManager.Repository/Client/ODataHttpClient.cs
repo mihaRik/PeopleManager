@@ -1,6 +1,6 @@
 namespace PeopleManager.Repository.Client;
 
-public class ODataHttpClient : IODataHttpClient
+public class ODataHttpClient : IODataHttpClient, IDisposable
 {
     private readonly HttpClient _httpClient;
 
@@ -24,7 +24,7 @@ public class ODataHttpClient : IODataHttpClient
     {
         if (disposing)
         {
-            _httpClient.Dispose();
+            _httpClient?.Dispose();
         }
     }
 
