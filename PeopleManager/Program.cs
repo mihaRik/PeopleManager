@@ -1,19 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PeopleManager;
-using PeopleManager.Logic.Services;
-using PeopleManager.Repository;
-using PeopleManager.Repository.Client;
+using PeopleManager.Logic.Helpers;
+using PeopleManager.Repository.Helpers;
+using PeopleManager.Screens;
 
-var serviceCollection = new ServiceCollection();
-serviceCollection.AddHttpClient<IODataHttpClient, ODataHttpClient>(config =>
-{
-    config.BaseAddress = new Uri("http://services.odata.org/TripPinRESTierService/(S(ibiqexd5sgywtjtvpesut30t))");
-});
-serviceCollection.AddScoped<IPeopleService, PeopleService>();
-serviceCollection.AddScoped<IReadOnlyPeopleRepository, PeopleRepository>();
-serviceCollection.AddScoped<OptionSelector>();
+var services = new ServiceCollection();
 
-var serviceProvider = serviceCollection.BuildServiceProvider();
-var optionSelector = serviceProvider.GetRequiredService<OptionSelector>();
+services
+    .AddScreens()
+    .AddLogicServices()
+    .AddRepositories();
 
-await optionSelector.StartAsync();
+var serviceProvider = services.BuildServiceProvider();
+var app = serviceProvider.GetRequiredService<MainScreen>();
+
+await app.StartAsync();

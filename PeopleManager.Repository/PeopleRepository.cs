@@ -1,11 +1,14 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using PeopleManager.Domain.Entities;
 using PeopleManager.Repository.Client;
 using UriBuilder = PeopleManager.Repository.Utils.UriBuilder;
 
 namespace PeopleManager.Repository;
 
-public class PeopleRepository : IReadOnlyPeopleRepository
+public class PeopleRepository : IPeopleRepository
 {
     private const string PeopleSegmentUrl = "people";
     private readonly string[] _properties = ["UserName", "FirstName", "LastName"];
@@ -69,5 +72,23 @@ public class PeopleRepository : IReadOnlyPeopleRepository
 
         var wrapper = await response.Content.ReadFromJsonAsync<ODataWrapper<Person>>(cancellationToken: cancellationToken).ConfigureAwait(false);
         return wrapper?.Value ?? Array.Empty<Person>();
+    }
+
+    public async Task<Person> UpdatePersonAsync(string username, Person person, CancellationToken cancellationToken)
+    {
+        var uri = new UriBuilder(PeopleSegmentUrl)
+            .WithFilterById(username)
+            .Build();
+
+        var request = new HttpRequestMessage(HttpMethod.Post, uri)
+        {
+            Content = new StringContent(JsonSerializer.Serialize(person), MediaTypeHeaderValue.Parse("application/json")),
+        };
+        var a = JsonContent.Create(person);
+        var f = await a.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+        var response = await _httpClient.MakeRequestAsync(request, cancellationToken).ConfigureAwait(false);
+
+        return await response.Content.ReadFromJsonAsync<Person>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

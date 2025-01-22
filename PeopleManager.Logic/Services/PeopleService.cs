@@ -1,3 +1,4 @@
+using System.Reflection;
 using PeopleManager.Domain.Entities;
 using PeopleManager.Logic.Helpers;
 using PeopleManager.Repository;
@@ -6,9 +7,9 @@ namespace PeopleManager.Logic.Services;
 
 public class PeopleService : IPeopleService
 {
-    private readonly IReadOnlyPeopleRepository _peopleRepository;
+    private readonly IPeopleRepository _peopleRepository;
 
-    public PeopleService(IReadOnlyPeopleRepository peopleRepository)
+    public PeopleService(IPeopleRepository peopleRepository)
     {
         _peopleRepository = peopleRepository;
     }
@@ -51,5 +52,17 @@ public class PeopleService : IPeopleService
             PageSize = pageSize,
             TotalItems = totalCount
         };
+    }
+
+    public async Task<Person> UpdatePersonAsync(
+        Person person,
+        PropertyInfo propertyToUpdate,
+        object newValue,
+        CancellationToken cancellationToken)
+    {
+        var username = person.UserName;
+        propertyToUpdate.SetValue(person, newValue);
+        
+        return await _peopleRepository.UpdatePersonAsync(username, person, cancellationToken).ConfigureAwait(false);
     }
 }
