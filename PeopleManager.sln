@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Logic", "Peop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Repository.Tests", "PeopleManager.Repository.Tests\PeopleManager.Repository.Tests.csproj", "{D0624B18-EB00-4A01-BED9-F02BBFBA47A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleManager.Logic.Tests", "PeopleManager.Logic.Tests\PeopleManager.Logic.Tests.csproj", "{4D9612B6-C791-47B3-B11E-58F922DE108D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{D0624B18-EB00-4A01-BED9-F02BBFBA47A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0624B18-EB00-4A01-BED9-F02BBFBA47A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0624B18-EB00-4A01-BED9-F02BBFBA47A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D9612B6-C791-47B3-B11E-58F922DE108D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D9612B6-C791-47B3-B11E-58F922DE108D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D9612B6-C791-47B3-B11E-58F922DE108D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D9612B6-C791-47B3-B11E-58F922DE108D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

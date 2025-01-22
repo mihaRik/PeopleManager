@@ -3,7 +3,7 @@ using PeopleManager.Logic.Services;
 
 namespace PeopleManager.Screens;
 
-public class PersonScreen
+public class PersonScreen : IDisposable
 {
     private readonly IPeopleService _peopleService;
     private readonly PersonUpdateScreen _personUpdateScreen;
@@ -70,5 +70,24 @@ public class PersonScreen
         Console.WriteLine(
             $"Friends: {(friends is not null && friends.Count != 0 ? string.Join(" | ", friends) : "N/A")}");
         Console.WriteLine($"Trips: {(trips is not null && trips.Count != 0 ? string.Join(" | ", trips) : "N/A")}");
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _peopleService.Dispose();
+        }
+    }
+
+    ~PersonScreen()
+    {
+        Dispose(false);
     }
 }

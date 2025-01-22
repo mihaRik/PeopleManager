@@ -65,4 +65,23 @@ public class PeopleService : IPeopleService
         
         return await _peopleRepository.UpdatePersonAsync(username, person, cancellationToken).ConfigureAwait(false);
     }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _peopleRepository.Dispose();
+        }
+    }
+
+    ~PeopleService()
+    {
+        Dispose(false);
+    }
 }

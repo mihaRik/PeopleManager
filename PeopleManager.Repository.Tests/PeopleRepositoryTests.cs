@@ -19,6 +19,12 @@ public class PeopleRepositoryTests
         _repository = new PeopleRepository(_mockHttpClient.Object);
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+        _repository.Dispose();
+    }
+
     [Test]
     public async Task GetPeopleAsync_ShouldReturnPeople_WhenResponseIsSuccessful()
     {

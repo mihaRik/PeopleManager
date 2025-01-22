@@ -4,7 +4,7 @@ using PeopleManager.Logic.Services;
 
 namespace PeopleManager.Screens;
 
-public class PeopleListScreen
+public class PeopleListScreen : IDisposable
 {
     private readonly IPeopleService _peopleService;
     private readonly PersonScreen _personScreen;
@@ -139,5 +139,24 @@ public class PeopleListScreen
 
             break;
         }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _peopleService.Dispose();
+        }
+    }
+
+    ~PeopleListScreen()
+    {
+        Dispose(false);
     }
 }

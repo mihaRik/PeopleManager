@@ -4,7 +4,7 @@ using PeopleManager.Logic.Services;
 
 namespace PeopleManager.Screens;
 
-public class PersonUpdateScreen
+public class PersonUpdateScreen : IDisposable
 {
     private readonly IPeopleService _peopleService;
 
@@ -86,5 +86,24 @@ public class PersonUpdateScreen
             Console.WriteLine();
             await DisplayPersonUpdateScreenAsync([person], cancellationToken).ConfigureAwait(false);
         }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _peopleService.Dispose();
+        }
+    }
+
+    ~PersonUpdateScreen()
+    {
+        Dispose(false);
     }
 }

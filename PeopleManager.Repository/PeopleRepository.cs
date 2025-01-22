@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using PeopleManager.Domain.Entities;
 using PeopleManager.Repository.Client;
 using UriBuilder = PeopleManager.Repository.Utils.UriBuilder;
@@ -90,5 +89,24 @@ public class PeopleRepository : IPeopleRepository
         var response = await _httpClient.MakeRequestAsync(request, cancellationToken).ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<Person>(cancellationToken: cancellationToken).ConfigureAwait(false);
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _httpClient.Dispose();
+        }
+    }
+
+    ~PeopleRepository()
+    {
+        Dispose(false);
     }
 }

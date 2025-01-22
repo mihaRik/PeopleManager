@@ -24,6 +24,7 @@ public class ODataHttpClientTests
     public void TearDown()
     {
         _mockHttpClient.Dispose();
+        _oDataHttpClient.Dispose();
     }
 
     [Test]

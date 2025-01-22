@@ -1,8 +1,6 @@
-using PeopleManager.Domain.Entities;
-
 namespace PeopleManager.Repository.Client;
 
-public interface IODataHttpClient
+public interface IODataHttpClient : IDisposable
 {
     Task<HttpResponseMessage> MakeRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken);
 }
