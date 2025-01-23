@@ -7,10 +7,12 @@ namespace PeopleManager.Screens;
 public class PersonUpdateScreen
 {
     private readonly IPeopleService _peopleService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public PersonUpdateScreen(IPeopleService peopleService)
+    public PersonUpdateScreen(IPeopleService peopleService, IServiceProvider serviceProvider)
     {
         _peopleService = peopleService;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task DisplayPersonUpdateScreenAsync(object[] actionParams, CancellationToken cancellationToken)
@@ -77,6 +79,12 @@ public class PersonUpdateScreen
             var updatedPerson = await _peopleService.UpdatePersonAsync(person, propertyInfo, newValue, cancellationToken).ConfigureAwait(false);
             Console.Clear();
             PersonScreen.DisplayPerson(updatedPerson);
+
+            await OptionsScreen.DisplayOptionsAsync(new Dictionary<int, Option>()
+                {
+                    { 1, MainScreen.GetMainScreenOption(_serviceProvider) },
+                },
+                cancellationToken);
         }
         catch (ArgumentException e)
         {

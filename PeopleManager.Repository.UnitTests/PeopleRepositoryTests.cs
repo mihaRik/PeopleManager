@@ -84,7 +84,7 @@ public class PeopleRepositoryTests
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await _repository.GetPeopleCountAsync("John", CancellationToken.None);
+        var result = await _repository.GetPeopleCountAsync(null!, CancellationToken.None);
 
         // Assert
         result.Should().Be(expectedCount);
@@ -105,12 +105,57 @@ public class PeopleRepositoryTests
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await _repository.GetPeopleCountAsync("John", CancellationToken.None);
+        var result = await _repository.GetPeopleCountAsync(null!, CancellationToken.None);
 
         // Assert
         result.Should().Be(0);
     }
 
+    [Test]
+    public async Task GetPeopleCountAsync_WithSearchQuery_ReturnsZero_WhenODataWrapperIsEmpty()
+    {
+        // Arrange
+        const string searchQuery = "John";
+        var mockResponse = new HttpResponseMessage
+        {
+            StatusCode = HttpStatusCode.OK,
+            Content = JsonContent.Create(new ODataWrapper<Person> { Value = Array.Empty<Person>() })
+        };
+
+        _mockHttpClient
+            .Setup(client => client.MakeRequestAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(mockResponse);
+
+        // Act
+        var result = await _repository.GetPeopleCountAsync(searchQuery, CancellationToken.None);
+
+        // Assert
+        result.Should().Be(0);
+    }
+    
+    [Test]
+    public async Task GetPeopleCountAsync_WithSearchQuery_ReturnsCount()
+    {
+        // Arrange
+        const string searchQuery = "John";
+        var people = new[] { new Person(), new Person() };
+        var mockResponse = new HttpResponseMessage
+        {
+            StatusCode = HttpStatusCode.OK,
+            Content = JsonContent.Create(new ODataWrapper<Person> { Value = people })
+        };
+
+        _mockHttpClient
+            .Setup(client => client.MakeRequestAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(mockResponse);
+
+        // Act
+        var result = await _repository.GetPeopleCountAsync(searchQuery, CancellationToken.None);
+
+        // Assert
+        result.Should().Be(2);
+    }
+    
     [Test]
     public async Task GetPersonByUsernameAsync_ShouldReturnPerson_WhenResponseIsSuccessful()
     {

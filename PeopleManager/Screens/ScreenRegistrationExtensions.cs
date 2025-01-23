@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using PeopleManager.Helpers;
 
 namespace PeopleManager.Screens;
 
@@ -12,8 +11,7 @@ public static class ScreenRegistrationExtensions
         services.AddScoped<PersonScreen>();
         services.AddScoped<PersonUpdateScreen>();
         services.AddScoped<OptionsScreen>();
-        services.AddScoped<PeopleListScreen>();
-        services.AddScoped<IConsoleWrapper, ConsoleWrapper>();
+        services.AddScoped<PeopleScreen>();
         
         return services;
     }

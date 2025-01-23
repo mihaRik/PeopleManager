@@ -37,15 +37,28 @@ public class PeopleRepository : IPeopleRepository
         var uriBuilder = new UriBuilder(PeopleSegmentUrl);
         if (searchQuery != null)
         {
-            uriBuilder.WithFilterByProperties(searchQuery, _properties);
-        }
-        var uri = uriBuilder.WithCount().Build();
-        var request = new HttpRequestMessage(HttpMethod.Get, uri);
-        
-        var response = await _httpClient.MakeRequestAsync(request, cancellationToken).ConfigureAwait(false);
-        var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var uri = uriBuilder
+                .WithFilterByProperties(searchQuery, _properties)
+                .WithSelect("UserName")
+                .Build();
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            
+            var response = await _httpClient.MakeRequestAsync(request, cancellationToken).ConfigureAwait(false);
+            
+            var wrapper = await response.Content.ReadFromJsonAsync<ODataWrapper<Person>>(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        return int.TryParse(content, out var count) ? count : 0;
+            return wrapper?.Value?.Count() ?? 0;
+        }
+        else
+        {
+            var uri = uriBuilder.WithCount().Build();
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            
+            var response = await _httpClient.MakeRequestAsync(request, cancellationToken).ConfigureAwait(false);
+            var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            return int.TryParse(content, out var count) ? count : 0;
+        }
     }
 
     public async Task<Person> GetPersonByUsernameAsync(string username, CancellationToken cancellationToken)

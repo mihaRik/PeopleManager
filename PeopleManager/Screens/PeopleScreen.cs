@@ -1,26 +1,28 @@
 using PeopleManager.Domain.Entities;
-using PeopleManager.Helpers;
 using PeopleManager.Logic.Helpers;
 using PeopleManager.Logic.Services;
 
 namespace PeopleManager.Screens;
 
-public class PeopleListScreen
+public class PeopleScreen
 {
+    private const int DefaultPageSize = 5;
+
     private readonly IPeopleService _peopleService;
     private readonly PersonScreen _personScreen;
     private readonly IServiceProvider _serviceProvider;
-    private readonly IConsoleWrapper _console;
 
-    public PeopleListScreen(IPeopleService peopleService, PersonScreen personScreen, IServiceProvider serviceProvider, IConsoleWrapper console)
+    public PeopleScreen(IPeopleService peopleService, PersonScreen personScreen, IServiceProvider serviceProvider)
     {
         _peopleService = peopleService;
         _personScreen = personScreen;
         _serviceProvider = serviceProvider;
-        _console = console;
     }
 
-    private static Option GetBackToListOption (Option option) => new() { Name = "Back to list ⏪", Action = option.Action, ActionParams = option.ActionParams};
+    public Option ListPeopleOption => new() { Name = "List People 👫", Action = DisplayPeopleListAsync, ActionParams = [1, DefaultPageSize] };
+    public Option SearchOption => new() { Name = "Search 🔍", Action = DisplaySearchPeopleAsync, ActionParams = [1, DefaultPageSize, null!] };
+    private static Option NextPage (Option option) => new() { Name = "Next Page ➡️", Action = option.Action, ActionParams = option.ActionParams};
+    private static Option PreviousPage (Option option) => new() { Name = "Previous Page ⬅️", Action = option.Action, ActionParams = option.ActionParams};
 
     public async Task DisplayPeopleListAsync(object[] actionParams, CancellationToken cancellationToken)
     {
@@ -38,7 +40,7 @@ public class PeopleListScreen
         var pagedResult = await _peopleService.GetPeopleAsync(page, pageSize, cancellationToken).ConfigureAwait(false);
 
         var listPeopleAsync = new Option { Action = DisplayPeopleListAsync, ActionParams = [page, pageSize] };
-        var peopleListOptions = await GetPeopleListOptionsAsync(pagedResult, listPeopleAsync,  cancellationToken).ConfigureAwait(false);
+        var peopleListOptions = GetPeopleListOptions(pagedResult, listPeopleAsync);
 
         await OptionsScreen.DisplayOptionsAsync(peopleListOptions, cancellationToken).ConfigureAwait(false);
     }
@@ -63,15 +65,14 @@ public class PeopleListScreen
         var pagedResult = await _peopleService.SearchPeopleAsync(searchQuery, page, pageSize, cancellationToken).ConfigureAwait(false);
 
         var searchPeopleAsync = new Option { Action = DisplaySearchPeopleAsync, ActionParams = [page, pageSize, searchQuery] };
-        var peopleListOptions = await GetPeopleListOptionsAsync(pagedResult, searchPeopleAsync, cancellationToken).ConfigureAwait(false);
+        var peopleListOptions = GetPeopleListOptions(pagedResult, searchPeopleAsync);
 
         await OptionsScreen.DisplayOptionsAsync(peopleListOptions, cancellationToken).ConfigureAwait(false);
     }
     
-    private async Task<Dictionary<int, Option>> GetPeopleListOptionsAsync(
+    private Dictionary<int, Option> GetPeopleListOptions(
         PagedResult<Person> pagedResult,
-        Option navigationFunction,
-        CancellationToken cancellationToken)
+        Option navigationOption)
     {
         var people = new Dictionary<int, Option>();
 
@@ -89,58 +90,37 @@ public class PeopleListScreen
                 ActionParams = [person.UserName]
             });
         }
-        people.Add(pagedResult.Items.Count() + 1, GetBackToListOption(navigationFunction));
-        people.Add(pagedResult.Items.Count() + 2, MainScreen.GetMainScreenOption(_serviceProvider));
         
+        var optionIndex = pagedResult.Items.Count();
+
         Console.WriteLine();
         if (!pagedResult.Items.Any())
         {
             Console.WriteLine("No people found.");
-            return people;
         }
-
-        Console.WriteLine($"Page #{pagedResult.CurrentPage} of {(pagedResult.TotalPages < 1 ? 1 : pagedResult.TotalPages)}");
-
-        await GetArrowKey(pagedResult, navigationFunction, cancellationToken).ConfigureAwait(false);
-
-        Console.Clear();
-        Console.WriteLine("Enter a number of a person to get detailed information, or press any key to continue.");
-        
-        return people;
-    }
-    
-    private async Task GetArrowKey<T>(
-        PagedResult<T> pagedResult,
-        Option navigationFunction,
-        CancellationToken cancellationToken)
-    {
-        while (true)
+        else
         {
-            Console.WriteLine("You can use arrows(<- | ->) to navigate, or press any key to continue.");
-            var key = _console.ReadKey();
-            switch (key.Key)
+            if (pagedResult.CurrentPage < pagedResult.TotalPages)
             {
-                case ConsoleKey.LeftArrow when pagedResult.CurrentPage > 1:
-                    navigationFunction.ActionParams[0] = pagedResult.CurrentPage - 1;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    Console.WriteLine();
-                    Console.WriteLine("You are already on the first page.");
-                    continue;
-                case ConsoleKey.RightArrow when pagedResult.CurrentPage < pagedResult.TotalPages:
-                    navigationFunction.ActionParams[0] = pagedResult.CurrentPage + 1;
-                    break;
-                case ConsoleKey.RightArrow:
-                    Console.WriteLine();
-                    Console.WriteLine("You are already on the last page.");
-                    continue;
-                default:
-                    return;
+                var nextPageOption = navigationOption.Clone();
+                nextPageOption.ActionParams[0] = pagedResult.CurrentPage + 1;
+                people.Add(++optionIndex, NextPage(nextPageOption));
             }
 
-            await navigationFunction.Action(navigationFunction.ActionParams, cancellationToken).ConfigureAwait(false);
+            if (pagedResult.CurrentPage > 1)
+            {
+                var previousPageOption = navigationOption.Clone();
+                previousPageOption.ActionParams[0] = pagedResult.CurrentPage - 1;
+                people.Add(++optionIndex, PreviousPage(previousPageOption));
+            }
 
-            break;
+            Console.WriteLine($"Page #{pagedResult.CurrentPage} of {(pagedResult.TotalPages < 1 ? 1 : pagedResult.TotalPages)}");
         }
+
+        people.Add(++optionIndex, SearchOption);
+        people.Add(++optionIndex, MainScreen.GetMainScreenOption(_serviceProvider));
+
+
+        return people;
     }
 }

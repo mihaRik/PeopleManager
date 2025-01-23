@@ -32,10 +32,10 @@ public class PersonScreen
                 Console.Clear();
                 DisplayPerson(person);
 
-                var updatePersonAsync = new Option { Name = "Update info ℹ️", Action = _personUpdateScreen.DisplayPersonUpdateScreenAsync, ActionParams = [person] };
+                var updatePersonOption = new Option { Name = "Update info ℹ️", Action = _personUpdateScreen.DisplayPersonUpdateScreenAsync, ActionParams = [person] };
                 var personDetailsOptions = new Dictionary<int, Option>
                 {
-                    { 1, updatePersonAsync },
+                    { 1, updatePersonOption },
                     { 2, MainScreen.GetMainScreenOption(_serviceProvider) }
                 };
 

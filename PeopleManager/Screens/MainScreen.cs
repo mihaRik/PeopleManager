@@ -7,10 +7,10 @@ public class MainScreen
     private readonly Dictionary<int, Option> _options = new();
     private readonly CancellationTokenSource _cts = new();
 
-    public MainScreen(PeopleListScreen peopleListScreen)
+    public MainScreen(PeopleScreen peopleScreen)
     {
-        _options.Add(1, new Option { Name = "List People 👫", Action = peopleListScreen.DisplayPeopleListAsync, ActionParams = [1, 5] });
-        _options.Add(2, new Option { Name = "Search 🔍", Action = peopleListScreen.DisplaySearchPeopleAsync, ActionParams = [1, 5, null!] });
+        _options.Add(1, peopleScreen.ListPeopleOption);
+        _options.Add(2, peopleScreen.SearchOption);
         _options.Add(3, CloseOption);
     }
 
@@ -37,6 +37,6 @@ public class MainScreen
     
     private async Task CloseAsync(object[] actionParams, CancellationToken cancellationToken)
     {
-        await _cts.CancelAsync();
+        await _cts.CancelAsync().ConfigureAwait(false);
     }
 }
