@@ -103,4 +103,9 @@ public class PeopleRepository : IPeopleRepository
 
         return await response.Content.ReadFromJsonAsync<Person>(cancellationToken: cancellationToken).ConfigureAwait(false);
     }
+
+    public Task<Person> CreatePersonAsync(Person person, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

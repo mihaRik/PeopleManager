@@ -65,4 +65,9 @@ public class PeopleService : IPeopleService
         
         return await _peopleRepository.UpdatePersonAsync(username, person, cancellationToken).ConfigureAwait(false);
     }
+
+    public async Task<Person> CreatePersonAsync(Person person, CancellationToken cancellationToken)
+    {
+        return await _peopleRepository.CreatePersonAsync(person, cancellationToken).ConfigureAwait(false);
+    }
 }

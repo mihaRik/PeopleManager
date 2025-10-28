@@ -17,4 +17,6 @@ public interface IPeopleService
         PropertyInfo propertyToUpdate,
         object newValue,
         CancellationToken cancellationToken);
+    
+    Task<Person> CreatePersonAsync(Person person, CancellationToken cancellationToken);
 }

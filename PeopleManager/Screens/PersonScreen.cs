@@ -71,4 +71,9 @@ public class PersonScreen
             $"Friends: {(friends is not null && friends.Count != 0 ? string.Join(" | ", friends) : "N/A")}");
         Console.WriteLine($"Trips: {(trips is not null && trips.Count != 0 ? string.Join(" | ", trips) : "N/A")}");
     }
+
+    // public void DisplayCreatePerson()
+    // {
+    //     _peopleService.CreatePersonAsync();
+    // }
 }
